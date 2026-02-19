@@ -1,0 +1,242 @@
+# Interactive CLI
+
+The NEXUS interactive shell is a Claude Code-like terminal experience that gives you a live REPL connected to the full 56-agent engine. Type natural language, slash commands, or questions — the shell streams agent activity back to you in real time.
+
+## Launching the Shell
+
+```bash
+buildwithnexus          # launch interactive shell (no args)
+buildwithnexus shell    # explicit shell subcommand
+```
+
+Once connected, you see:
+
+```
+nexus ❯ _
+```
+
+Type anything in natural language and the engine routes it through the full orchestration pipeline.
+
+## The REPL Prompt
+
+The `nexus ❯` prompt accepts:
+
+- **Natural language directives** — "Build me a REST API for user auth"
+- **Questions** — "What agents are currently running?"
+- **Slash commands** — `/status`, `/cost`, `/agents`, etc.
+
+Input is streamed to the engine via SSH tunnel and responses render as agent activity arrives over SSE.
+
+## Slash Commands
+
+<table>
+  <thead>
+    <tr>
+      <th>Command</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>/brainstorm [idea]</code></td>
+      <td>Start a brainstorm session with the Chief of Staff — explores the idea, surfaces risks, and outlines an execution plan</td>
+    </tr>
+    <tr>
+      <td><code>/status</code></td>
+      <td>Show VM, Docker, server, and tunnel health at a glance</td>
+    </tr>
+    <tr>
+      <td><code>/logs</code></td>
+      <td>Stream live server logs (auto-redacted via DLP)</td>
+    </tr>
+    <tr>
+      <td><code>/agents</code></td>
+      <td>List all 56 agents with role, model, and current state</td>
+    </tr>
+    <tr>
+      <td><code>/cost</code></td>
+      <td>Show token usage and costs per agent, project, and model</td>
+    </tr>
+    <tr>
+      <td><code>/ssh</code></td>
+      <td>Drop into a direct SSH session inside the VM</td>
+    </tr>
+    <tr>
+      <td><code>/help</code></td>
+      <td>Show all available commands and usage</td>
+    </tr>
+    <tr>
+      <td><code>/exit</code></td>
+      <td>Exit the interactive shell</td>
+    </tr>
+  </tbody>
+</table>
+
+## Real-Time Agent Streaming
+
+When you send a directive, the shell doesn't wait for a final answer — it streams agent activity as it happens:
+
+```
+nexus ❯ build a user authentication service
+
+  Chief of Staff    Reviewing directive and assembling team...
+  VP Engineering    Designing authentication architecture...
+  Tech Lead         Decomposing into 4 parallel workstreams...
+  Backend Dev       Implementing JWT token service...
+  Backend Dev       Writing password hashing utilities...
+  Test Engineer     Writing auth unit tests...
+  Senior Engineer   Code review: auth service...
+  ✓ Complete        Committed to nexus/self-update in 4m 12s
+```
+
+Each line appears as the corresponding agent completes its work. You see the org chart executing in real time.
+
+## Agent Role Colors
+
+The shell uses color coding to distinguish agent layers at a glance:
+
+<table>
+  <thead>
+    <tr>
+      <th>Color</th>
+      <th>Layer</th>
+      <th>Examples</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Cyan</strong></td>
+      <td>Executive</td>
+      <td>Chief of Staff, CPO, CFO, CTO</td>
+    </tr>
+    <tr>
+      <td><strong>Blue</strong></td>
+      <td>Management</td>
+      <td>VP Engineering, Engineering Managers, Tech Leads</td>
+    </tr>
+    <tr>
+      <td><strong>Yellow</strong></td>
+      <td>Senior</td>
+      <td>Senior Engineers, Code Reviewers</td>
+    </tr>
+    <tr>
+      <td><strong>White</strong></td>
+      <td>Implementation</td>
+      <td>Frontend, Backend, Full-Stack, DevOps</td>
+    </tr>
+    <tr>
+      <td><strong>Green</strong></td>
+      <td>Quality</td>
+      <td>QA Leads, Test Engineers</td>
+    </tr>
+    <tr>
+      <td><strong>Magenta</strong></td>
+      <td>Consultant</td>
+      <td>Security Architect, UX Consultant</td>
+    </tr>
+  </tbody>
+</table>
+
+## Architecture
+
+```
+User types in shell
+        |
+        v
+  shell.ts (REPL loop)
+        |
+        v
+  POST /message  ←── SSH port-forward (localhost:4200)
+        |
+        v
+  NEXUS Engine (orchestration pipeline)
+        |
+        v
+  GET /events (SSE stream)
+        |
+        v
+  REPL renders agent lines as they arrive
+```
+
+The SSH tunnel ensures all traffic stays local — the engine is never exposed to the network. The SSE stream uses `text/event-stream` and pushes one JSON event per agent action. The shell renders each event incrementally so you see the pipeline executing live rather than waiting for batch output.
+
+## CLI vs Engine vs Plugin vs SDK
+
+<table>
+  <thead>
+    <tr>
+      <th>Component</th>
+      <th>What It Is</th>
+      <th>Install</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>CLI</strong></td>
+      <td>The <code>buildwithnexus</code> npm package. Manages VM lifecycle, runs the interactive shell, handles brainstorm sessions. Connects to the engine via SSH tunnel. Zero-config security with DLP, HMAC integrity, and audit trails.</td>
+      <td><code>npm install -g buildwithnexus</code></td>
+    </tr>
+    <tr>
+      <td><strong>Engine</strong></td>
+      <td>The autonomous orchestration server running inside the VM at <code>:4200</code>. Houses all 56 agents, the ML pipeline, encrypted databases, and Docker sandboxing. Exposes a RESTful API: <code>/message</code>, <code>/events</code> (SSE), <code>/agents</code>, <code>/cost</code>, <code>/health</code>, <code>/status</code>.</td>
+      <td>Deployed automatically by <code>buildwithnexus init</code></td>
+    </tr>
+    <tr>
+      <td><strong>Plugin</strong></td>
+      <td>The <code>nexus-plugin</code> for Claude Code. Extends Claude Code with NEXUS skills and organizational agent structure. Skills: <code>/nexus</code>, <code>/brainstorm</code>, <code>/deploy</code>, and more.</td>
+      <td>Claude Code plugin registry</td>
+    </tr>
+    <tr>
+      <td><strong>SDK</strong></td>
+      <td>The <code>nexus-sdk</code> Python package. A multi-agent orchestration library with swappable AI providers. Build your own agent systems using NEXUS patterns with adapters for Anthropic, OpenAI, and Google.</td>
+      <td><code>pip install nexus-sdk</code></td>
+    </tr>
+  </tbody>
+</table>
+
+Use the **CLI** when you want a zero-config terminal experience backed by the full engine. Use the **Plugin** when you live in Claude Code. Use the **SDK** when you want to build your own agent systems with NEXUS patterns.
+
+## Security Model
+
+The interactive shell inherits all security controls from the CLI layer:
+
+<table>
+  <thead>
+    <tr>
+      <th>Control</th>
+      <th>Detail</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>VM Isolation</strong></td>
+      <td>Triple-nested: host → QEMU → Docker → nested KVM. The engine never runs on your host.</td>
+    </tr>
+    <tr>
+      <td><strong>Network</strong></td>
+      <td>All traffic via SSH port-forward. The engine is never exposed to the network.</td>
+    </tr>
+    <tr>
+      <td><strong>DLP</strong></td>
+      <td>Secret detection, shell escaping, and output redaction on every data path.</td>
+    </tr>
+    <tr>
+      <td><strong>File Integrity</strong></td>
+      <td>HMAC-SHA256 tamper detection on key files.</td>
+    </tr>
+    <tr>
+      <td><strong>Audit Trail</strong></td>
+      <td>10 MB rotating log of every sensitive operation with timestamps.</td>
+    </tr>
+    <tr>
+      <td><strong>Databases</strong></td>
+      <td>AES-256-CBC encryption via SQLCipher with PBKDF2 key derivation.</td>
+    </tr>
+    <tr>
+      <td><strong>JWT Auth</strong></td>
+      <td>Tokens bound to client fingerprint (User-Agent + IP). No token reuse across clients.</td>
+    </tr>
+  </tbody>
+</table>
+
+All controls are active by default. No configuration required.
