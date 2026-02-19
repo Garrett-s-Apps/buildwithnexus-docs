@@ -27,6 +27,61 @@ The `nexus ❯` prompt accepts:
 
 Input is streamed to the engine via SSH tunnel and responses render as agent activity arrives over SSE.
 
+## /99 — AI Pair Programming
+
+Inspired by ThePrimeagen's [99 Neovim agent](https://github.com/ThePrimeagen/99), adapted for NEXUS and the terminal.
+NOT a Neovim plugin — `/99` runs inside Claude Code and as a `buildwithnexus` CLI command.
+
+```bash
+buildwithnexus 99                              # interactive pair-programming session
+buildwithnexus 99 "refactor the auth module"   # one-shot instruction
+buildwithnexus 99 --edit src/auth/login.ts     # AI-assisted file edit
+buildwithnexus 99 --search "refresh token"     # contextual codebase search
+buildwithnexus 99 --debug                      # debug current issue
+```
+
+When you send an instruction, the full NEXUS agent org executes it in real time:
+
+```
+99 ❯ add refresh token rotation to the auth service
+
+  Chief of Staff    Routing to engineering team...
+  Tech Lead         Analyzing auth module structure...
+  Backend Dev       Designing token rotation schema...
+  Backend Dev       Implementing refresh token logic...
+  Security          Reviewing for token leakage vectors...
+  Code Reviewer     Approving changes...
+  ✓ Complete        2 files modified
+```
+
+### Prefix Syntax
+
+- `@<filepath>` — attach a file as context: `@src/auth.ts refactor to use refresh tokens`
+- `#<rulefile>` — load a rules file: `#security-rules add input validation`
+
+Multiple prefixes combine freely: `@src/auth.ts @src/db.ts #security-rules add rate limiting`
+
+### Context Auto-Loading
+
+`/99` automatically finds and loads `AGENT.md`, `SKILL.md`, and `CLAUDE.md` by walking
+up from your working directory — so the agent understands your project's conventions
+before it writes a single line.
+
+### SDK Usage
+
+```python
+from src.agents.pair_programmer import PairProgrammerAgent
+
+agent = PairProgrammerAgent()
+result = await agent.run(
+    cwd="/path/to/project",
+    instruction="Refactor the auth module to use refresh tokens",
+    files=["src/auth/login.py"],
+)
+print(result.diff)     # unified diff of all changes
+print(result.summary)  # one-sentence summary
+```
+
 ## Slash Commands
 
 <table>
@@ -37,6 +92,10 @@ Input is streamed to the engine via SSH tunnel and responses render as agent act
     </tr>
   </thead>
   <tbody>
+    <tr>
+      <td><code>/99 [instruction]</code></td>
+      <td>AI pair-programming session — describe what to build or change and the full NEXUS engineering org executes it. Supports <code>@file</code> and <code>#rule</code> prefixes. Options: <code>--edit</code>, <code>--search</code>, <code>--debug</code></td>
+    </tr>
     <tr>
       <td><code>/brainstorm [idea]</code></td>
       <td>Start a brainstorm session with the Chief of Staff — explores the idea, surfaces risks, and outlines an execution plan</td>
@@ -195,184 +254,6 @@ The SSH tunnel ensures all traffic stays local — the engine is never exposed t
 </table>
 
 Use the **CLI** when you want a zero-config terminal experience backed by the full engine. Use the **Plugin** when you live in Claude Code. Use the **SDK** when you want to build your own agent systems with NEXUS patterns.
-
-## Use Cases
-
-Real-world scenarios for each interaction mode in the NEXUS shell.
-
-<div className="space-y-4 my-6">
-
-  <div className="rounded-xl border border-gray-700/60 bg-gray-900/40 overflow-hidden">
-    <div className="flex items-center gap-2 px-4 py-2 bg-gray-800/60 border-b border-gray-700/40">
-      <span className="text-xs font-mono text-gray-400">Free text</span>
-      <span className="text-xs text-gray-600">&mdash;</span>
-      <span className="text-xs text-gray-500">Natural language directive</span>
-    </div>
-    <div className="p-4">
-      <div className="font-mono text-sm text-blue-300 mb-3">nexus ❯ Build me a REST API for user authentication with JWT tokens</div>
-      <p className="text-sm text-gray-400 mb-3">NEXUS routes the request through the full orchestration pipeline and assigns a team automatically:</p>
-      <div className="font-mono text-xs text-gray-500 space-y-1">
-        <div><span className="text-cyan-400">Chief of Staff</span>    Reviewing directive and assembling team...</div>
-        <div><span className="text-blue-400">VP Engineering</span>    Designing auth architecture (JWT, bcrypt, refresh tokens)...</div>
-        <div><span className="text-blue-400">Tech Lead</span>         Decomposing into 3 parallel workstreams...</div>
-        <div><span className="text-white">Senior Engineer</span>   Implementing JWT token service...</div>
-        <div><span className="text-white">Backend Dev</span>       Writing password hashing utilities...</div>
-        <div><span className="text-green-400">QA Lead</span>           Writing auth unit and integration tests...</div>
-        <div><span className="text-purple-400">Security Engineer</span> Auditing token lifecycle and OWASP controls...</div>
-        <div><span className="text-yellow-400">Senior Engineer</span>   Code review: auth service...</div>
-        <div className="text-green-500">✓ Complete        Committed to nexus/self-update in 6m 43s</div>
-      </div>
-    </div>
-  </div>
-
-  <div className="rounded-xl border border-gray-700/60 bg-gray-900/40 overflow-hidden">
-    <div className="flex items-center gap-2 px-4 py-2 bg-gray-800/60 border-b border-gray-700/40">
-      <span className="text-xs font-mono text-indigo-400">/brainstorm</span>
-      <span className="text-xs text-gray-600">&mdash;</span>
-      <span className="text-xs text-gray-500">Org-wide idea exploration</span>
-    </div>
-    <div className="p-4">
-      <div className="font-mono text-sm text-blue-300 mb-3">nexus ❯ /brainstorm I want to add real-time collaboration to my app</div>
-      <p className="text-sm text-gray-400 mb-3">The Chief of Staff facilitates a structured discussion across the org. Every relevant VP weighs in before you commit to a direction:</p>
-      <div className="font-mono text-xs text-gray-500 space-y-1">
-        <div><span className="text-cyan-400">Chief of Staff</span>    Facilitating brainstorm: real-time collaboration...</div>
-        <div><span className="text-blue-400">VP Engineering</span>    WebSockets vs SSE vs long-polling — tradeoffs depend on scale...</div>
-        <div><span className="text-blue-400">Tech Lead</span>         Operational transform vs CRDTs for conflict resolution...</div>
-        <div><span className="text-purple-400">Security Architect</span> Auth for shared state: who owns the document lock?</div>
-        <div><span className="text-yellow-400">Principal Dev</span>    Prior art: we used Yjs on the analytics dashboard last month...</div>
-        <div><span className="text-cyan-400">Chief of Staff</span>    Summary: SSE + CRDT recommended. Security flagged session auth. Ready to plan?</div>
-      </div>
-      <p className="text-xs text-gray-600 mt-3">Follow up with a free-text directive to hand off to execution, or refine further with another <code>/brainstorm</code>.</p>
-    </div>
-  </div>
-
-  <div className="rounded-xl border border-gray-700/60 bg-gray-900/40 overflow-hidden">
-    <div className="flex items-center gap-2 px-4 py-2 bg-gray-800/60 border-b border-gray-700/40">
-      <span className="text-xs font-mono text-indigo-400">/status</span>
-      <span className="text-xs text-gray-600">&mdash;</span>
-      <span className="text-xs text-gray-500">System health at a glance</span>
-    </div>
-    <div className="p-4">
-      <p className="text-sm text-gray-400 mb-3">After kicking off a large build, check that all system layers are healthy before you walk away:</p>
-      <div className="font-mono text-xs text-gray-500 space-y-1">
-        <div><span className="text-green-400">✓</span> VM          Running  (QEMU 8.2, 4 vCPU, 8 GB RAM)</div>
-        <div><span className="text-green-400">✓</span> Docker      12 containers active, 0 unhealthy</div>
-        <div><span className="text-green-400">✓</span> Engine      :4200 responding, 56 agents registered</div>
-        <div><span className="text-green-400">✓</span> Tunnel      cloudflared connected (region: us-west)</div>
-        <div><span className="text-green-400">✓</span> Databases   7 encrypted DBs, last write 2s ago</div>
-        <div><span className="text-yellow-400">⚠</span> Disk        71% used (14.2 GB / 20 GB)</div>
-      </div>
-    </div>
-  </div>
-
-  <div className="rounded-xl border border-gray-700/60 bg-gray-900/40 overflow-hidden">
-    <div className="flex items-center gap-2 px-4 py-2 bg-gray-800/60 border-b border-gray-700/40">
-      <span className="text-xs font-mono text-indigo-400">/agents</span>
-      <span className="text-xs text-gray-600">&mdash;</span>
-      <span className="text-xs text-gray-500">Inspect the org chart</span>
-    </div>
-    <div className="p-4">
-      <p className="text-sm text-gray-400 mb-3">See all 56 agents, their model, layer, and whether they are idle or currently assigned to a task:</p>
-      <div className="font-mono text-xs text-gray-500 space-y-1">
-        <div><span className="text-cyan-400">Chief of Staff</span>     claude-opus-4-6      Executive    <span className="text-green-400">idle</span></div>
-        <div><span className="text-blue-400">VP Engineering</span>     claude-sonnet-4-5    Management   <span className="text-yellow-400">active</span></div>
-        <div><span className="text-blue-400">Tech Lead</span>          claude-sonnet-4-5    Management   <span className="text-green-400">idle</span></div>
-        <div><span className="text-yellow-400">Senior Engineer</span>   claude-sonnet-4-5    Senior       <span className="text-yellow-400">active</span></div>
-        <div><span className="text-white">Backend Dev</span>        claude-haiku-3-5     Implementation <span className="text-green-400">idle</span></div>
-        <div className="text-gray-600">... 51 more agents</div>
-      </div>
-    </div>
-  </div>
-
-  <div className="rounded-xl border border-gray-700/60 bg-gray-900/40 overflow-hidden">
-    <div className="flex items-center gap-2 px-4 py-2 bg-gray-800/60 border-b border-gray-700/40">
-      <span className="text-xs font-mono text-indigo-400">/cost</span>
-      <span className="text-xs text-gray-600">&mdash;</span>
-      <span className="text-xs text-gray-500">Monitor token spend</span>
-    </div>
-    <div className="p-4">
-      <p className="text-sm text-gray-400 mb-3">During a long-running task, check live token spend broken down by agent and model so nothing surprises you at the end:</p>
-      <div className="font-mono text-xs text-gray-500 space-y-1">
-        <div>Session total:   <span className="text-white">$0.83</span>  (42 min)</div>
-        <div>─────────────────────────────────</div>
-        <div><span className="text-cyan-400">Chief of Staff</span>    18,240 tokens   $0.18</div>
-        <div><span className="text-blue-400">VP Engineering</span>    12,100 tokens   $0.09</div>
-        <div><span className="text-yellow-400">Senior Engineer</span>   31,500 tokens   $0.24</div>
-        <div><span className="text-white">Backend Dev (×3)</span>  47,800 tokens   $0.19</div>
-        <div><span className="text-green-400">QA Lead</span>           17,200 tokens   $0.13</div>
-        <div>─────────────────────────────────</div>
-        <div>ML cost prediction for this task: $0.90 <span className="text-green-400">(within estimate)</span></div>
-      </div>
-    </div>
-  </div>
-
-  <div className="rounded-xl border border-gray-700/60 bg-gray-900/40 overflow-hidden">
-    <div className="flex items-center gap-2 px-4 py-2 bg-gray-800/60 border-b border-gray-700/40">
-      <span className="text-xs font-mono text-indigo-400">/logs</span>
-      <span className="text-xs text-gray-600">&mdash;</span>
-      <span className="text-xs text-gray-500">Debug a failed task</span>
-    </div>
-    <div className="p-4">
-      <p className="text-sm text-gray-400 mb-3">A task ended in an error. Pull the live server logs to find the root cause — secrets are auto-redacted by DLP before they reach your terminal:</p>
-      <div className="font-mono text-xs text-gray-500 space-y-1">
-        <div><span className="text-gray-600">14:22:31</span> INFO  Agent Backend Dev started task b7f2</div>
-        <div><span className="text-gray-600">14:22:44</span> INFO  Running pytest tests/test_auth.py...</div>
-        <div><span className="text-gray-600">14:22:49</span> ERROR tests/test_auth.py::test_refresh_token FAILED</div>
-        <div><span className="text-red-400">14:22:49</span> ERROR AssertionError: token expiry mismatch — expected 3600, got 300</div>
-        <div><span className="text-gray-600">14:22:49</span> INFO  QA Lead flagging for Senior Engineer review...</div>
-      </div>
-      <p className="text-xs text-gray-600 mt-3">Logs stream live. Press <code>Ctrl+C</code> to stop tailing and return to the prompt.</p>
-    </div>
-  </div>
-
-  <div className="rounded-xl border border-gray-700/60 bg-gray-900/40 overflow-hidden">
-    <div className="flex items-center gap-2 px-4 py-2 bg-gray-800/60 border-b border-gray-700/40">
-      <span className="text-xs font-mono text-indigo-400">/ssh</span>
-      <span className="text-xs text-gray-600">&mdash;</span>
-      <span className="text-xs text-gray-500">Drop into the VM directly</span>
-    </div>
-    <div className="p-4">
-      <p className="text-sm text-gray-400 mb-3">Need to inspect a Docker container, check disk usage, or tail a log file manually? Drop into a full SSH session inside the VM:</p>
-      <div className="font-mono text-xs text-gray-500 space-y-1">
-        <div><span className="text-blue-300">nexus ❯ /ssh</span></div>
-        <div>Connecting to VM via SSH tunnel (localhost:2222)...</div>
-        <div className="text-green-400">Connected. nexus-vm:~$</div>
-        <div className="text-gray-400 mt-1">nexus-vm:~$ docker ps --format "table &#123;&#123;.Names&#125;&#125;\t&#123;&#123;.Status&#125;&#125;"</div>
-        <div>nexus-cli-sandbox-1   Up 12 minutes</div>
-        <div>nexus-cli-sandbox-2   Up 8 minutes</div>
-        <div>nexus-engine          Up 43 minutes</div>
-        <div className="text-gray-400 mt-1">nexus-vm:~$ df -h /</div>
-        <div>Filesystem   Size  Used Avail Use%</div>
-        <div>/dev/vda1     20G   14G  5.1G  74%</div>
-      </div>
-      <p className="text-xs text-gray-600 mt-3">Type <code>exit</code> to return to the NEXUS shell prompt.</p>
-    </div>
-  </div>
-
-  <div className="rounded-xl border border-indigo-700/40 bg-indigo-900/10 overflow-hidden">
-    <div className="flex items-center gap-2 px-4 py-2 bg-indigo-900/30 border-b border-indigo-700/30">
-      <span className="text-xs font-mono text-indigo-400">/brainstorm &rarr; plan</span>
-      <span className="text-xs text-gray-600">&mdash;</span>
-      <span className="text-xs text-gray-500">Idea to execution plan</span>
-    </div>
-    <div className="p-4">
-      <p className="text-sm text-gray-400 mb-3">Refine a complex idea across multiple brainstorm turns, then hand off for a full execution plan with cost estimate and workstream breakdown:</p>
-      <div className="font-mono text-xs text-gray-500 space-y-1">
-        <div><span className="text-blue-300">nexus ❯ /brainstorm migrate our monolith to microservices</span></div>
-        <div><span className="text-cyan-400">Chief of Staff</span>  Exploring migration strategy with the org...</div>
-        <div className="text-gray-600">  [discussion: strangler fig vs big bang, service boundaries, data ownership]</div>
-        <div className="text-cyan-400 mt-1">Chief of Staff  Recommendation ready. Want a full execution plan?</div>
-        <div className="mt-2"><span className="text-blue-300">nexus ❯ yes, generate the plan</span></div>
-        <div><span className="text-cyan-400">Chief of Staff</span>  Generating phased plan with cost estimate...</div>
-        <div><span className="text-blue-400">VP Engineering</span>  Phase 1: extract auth service (est. $4.20, 3 workstreams)</div>
-        <div><span className="text-blue-400">VP Engineering</span>  Phase 2: extract billing service (est. $6.80, 4 workstreams)</div>
-        <div><span className="text-blue-400">CFO</span>            Total estimated cost: $28.40 across 8 phases</div>
-        <div className="text-cyan-400">Chief of Staff  Ready to execute Phase 1? (y/n)</div>
-      </div>
-    </div>
-  </div>
-
-</div>
 
 ## Security Model
 
