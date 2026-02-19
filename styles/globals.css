@@ -198,15 +198,9 @@ a {
   color: #93c5fd;
 }
 
-/* Navigation styles */
-.nav-container {
-  background-color: rgba(17, 24, 39, 0.95);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid #374151;
-}
-
+/* Content area */
 .content-container {
-  max-width: 1200px;
+  max-width: 900px;
   margin: 0 auto;
   padding: 2rem;
 }
