@@ -2,186 +2,221 @@ import { Stack, Grid, Box, Center, Row } from '../components/layoutkit'
 
 # Org Chart
 
-NEXUS operates as a fully autonomous software engineering organization. **You are the CEO.** The system provides a complete leadership team and specialist agents that plan, execute, and learn on your behalf. Each card below represents a role type — many roles have multiple agents filling them, totaling **27 active agents** across 6 layers.
+NEXUS operates as a fully autonomous software engineering organization. **You are the CEO.** The system provides a complete leadership team and specialist agents that plan, execute, and learn on your behalf. **27 active agents** across 6 layers.
 
 <Center className="my-8">
   <Stack gap="sm" align="center">
     <Box className="bg-gradient-to-r from-yellow-900/60 to-amber-900/40 border-2 border-yellow-500/60 rounded-xl px-8 py-4 text-center">
       <div className="text-yellow-400 text-xs font-bold uppercase tracking-wider">You</div>
-      <div className="text-white text-xl font-bold">CEO</div>
-      <div className="text-gray-400 text-sm">Sets direction, approves strategy</div>
+      <div className="text-white text-xl font-bold">CEO (Garrett)</div>
+      <div className="text-gray-400 text-sm">Sets direction, reviews demos, gives feedback</div>
     </Box>
     <div className="text-gray-600 text-2xl">|</div>
     <Box className="bg-gradient-to-r from-cyan-900/60 to-blue-900/40 border-2 border-cyan-500/60 rounded-xl px-8 py-4 text-center">
-      <div className="text-cyan-400 text-xs font-bold uppercase tracking-wider">AI Agent</div>
+      <div className="text-cyan-400 text-xs font-bold uppercase tracking-wider">Executive · Opus</div>
       <div className="text-white text-xl font-bold">Chief of Staff</div>
       <div className="text-gray-400 text-sm">Orchestrates all operations, routes tasks, manages priorities</div>
     </Box>
   </Stack>
 </Center>
 
-## Executive & Leadership (10 agents)
+## Executive Layer (4 agents)
 
-Chief of Staff, CPO, CFO, CRO, CTO, CISO, COO, CMO, CLO, CDO — the C-suite that governs strategy, budget, and quality bar. The three VPs below report into this layer.
+<Grid cols={4} gap="md" responsive minChildWidth="200px" className="my-6">
+  <Box className="bg-gradient-to-br from-cyan-900/50 to-blue-900/30 border border-cyan-700/40 rounded-xl p-5">
+    <Stack gap="xs">
+      <div className="text-cyan-400 text-xs font-bold uppercase tracking-wider">Opus</div>
+      <div className="text-white font-bold">Chief of Staff</div>
+      <div className="text-gray-400 text-xs">Routes all work, synthesizes results</div>
+    </Stack>
+  </Box>
+  <Box className="bg-gradient-to-br from-cyan-900/50 to-blue-900/30 border border-cyan-700/40 rounded-xl p-5">
+    <Stack gap="xs">
+      <div className="text-cyan-400 text-xs font-bold uppercase tracking-wider">Opus</div>
+      <div className="text-white font-bold">Chief Product Officer</div>
+      <div className="text-gray-400 text-xs">Requirements, roadmap, UX direction</div>
+    </Stack>
+  </Box>
+  <Box className="bg-gradient-to-br from-cyan-900/50 to-blue-900/30 border border-cyan-700/40 rounded-xl p-5">
+    <Stack gap="xs">
+      <div className="text-cyan-400 text-xs font-bold uppercase tracking-wider">Opus</div>
+      <div className="text-white font-bold">Chief Financial Officer</div>
+      <div className="text-gray-400 text-xs">Token costs, budget gates</div>
+    </Stack>
+  </Box>
+  <Box className="bg-gradient-to-br from-cyan-900/50 to-blue-900/30 border border-cyan-700/40 rounded-xl p-5">
+    <Stack gap="xs">
+      <div className="text-cyan-400 text-xs font-bold uppercase tracking-wider">Opus</div>
+      <div className="text-white font-bold">Chief Revenue Officer</div>
+      <div className="text-gray-400 text-xs">Growth, product-market fit</div>
+    </Stack>
+  </Box>
+</Grid>
 
-<Grid cols={3} gap="md" responsive minChildWidth="280px" className="my-8">
+## Management Layer (5 agents)
+
+<Grid cols={3} gap="md" responsive minChildWidth="200px" className="my-6">
   <Box className="bg-gradient-to-br from-blue-900/50 to-indigo-900/30 border border-blue-700/40 rounded-xl p-5">
     <Stack gap="xs">
-      <div className="text-blue-400 text-xs font-bold uppercase tracking-wider">VP</div>
-      <div className="text-white font-bold text-lg">VP of Engineering</div>
-      <div className="text-gray-400 text-sm">Technical architecture, code quality, system design</div>
+      <div className="text-blue-400 text-xs font-bold uppercase tracking-wider">Opus</div>
+      <div className="text-white font-bold">VP of Engineering</div>
+      <div className="text-gray-400 text-xs">Technical architecture, code quality</div>
     </Stack>
   </Box>
-  <Box className="bg-gradient-to-br from-green-900/50 to-emerald-900/30 border border-green-700/40 rounded-xl p-5">
+  <Box className="bg-gradient-to-br from-blue-900/50 to-indigo-900/30 border border-blue-700/40 rounded-xl p-5">
     <Stack gap="xs">
-      <div className="text-green-400 text-xs font-bold uppercase tracking-wider">VP</div>
-      <div className="text-white font-bold text-lg">VP of Product</div>
-      <div className="text-gray-400 text-sm">Requirements, roadmap, user experience</div>
+      <div className="text-blue-400 text-xs font-bold uppercase tracking-wider">Opus</div>
+      <div className="text-white font-bold">Tech Lead</div>
+      <div className="text-gray-400 text-xs">Architecture decisions, API contracts</div>
     </Stack>
   </Box>
-  <Box className="bg-gradient-to-br from-purple-900/50 to-violet-900/30 border border-purple-700/40 rounded-xl p-5">
+  <Box className="bg-gradient-to-br from-blue-900/50 to-indigo-900/30 border border-blue-700/40 rounded-xl p-5">
     <Stack gap="xs">
-      <div className="text-purple-400 text-xs font-bold uppercase tracking-wider">VP</div>
-      <div className="text-white font-bold text-lg">VP of Operations</div>
-      <div className="text-gray-400 text-sm">Infrastructure, deployment, monitoring</div>
+      <div className="text-blue-400 text-xs font-bold uppercase tracking-wider">Sonnet</div>
+      <div className="text-white font-bold">EM — Frontend</div>
+      <div className="text-gray-400 text-xs">Frontend team coordination</div>
+    </Stack>
+  </Box>
+  <Box className="bg-gradient-to-br from-blue-900/50 to-indigo-900/30 border border-blue-700/40 rounded-xl p-5">
+    <Stack gap="xs">
+      <div className="text-blue-400 text-xs font-bold uppercase tracking-wider">Sonnet</div>
+      <div className="text-white font-bold">EM — Backend</div>
+      <div className="text-gray-400 text-xs">Backend team coordination</div>
+    </Stack>
+  </Box>
+  <Box className="bg-gradient-to-br from-blue-900/50 to-indigo-900/30 border border-blue-700/40 rounded-xl p-5">
+    <Stack gap="xs">
+      <div className="text-blue-400 text-xs font-bold uppercase tracking-wider">Sonnet</div>
+      <div className="text-white font-bold">EM — Platform</div>
+      <div className="text-gray-400 text-xs">DevOps and infrastructure</div>
     </Stack>
   </Box>
 </Grid>
 
-## Management (10 agents)
-
-3 VPs, 4 Engineering Managers, and 3 Tech Leads coordinate across divisions.
-
-## Engineering Division (21 agents)
+## Senior Layer (4 agents)
 
 <Grid cols={4} gap="sm" responsive minChildWidth="200px" className="my-6">
   <Box className="bg-gray-800/80 border border-gray-700/50 rounded-lg p-4">
     <Stack gap="xs">
-      <div className="text-blue-300 font-semibold">Senior Engineer</div>
-      <div className="text-gray-400 text-xs">Full-stack implementation</div>
+      <div className="text-violet-300 font-semibold text-sm">Sr Frontend Engineer</div>
+      <div className="text-gray-400 text-xs">React, UI systems · Sonnet</div>
     </Stack>
   </Box>
   <Box className="bg-gray-800/80 border border-gray-700/50 rounded-lg p-4">
     <Stack gap="xs">
-      <div className="text-blue-300 font-semibold">Frontend Engineer</div>
-      <div className="text-gray-400 text-xs">UI/UX, React, CSS</div>
+      <div className="text-violet-300 font-semibold text-sm">Sr Backend Engineer</div>
+      <div className="text-gray-400 text-xs">APIs, services · Sonnet</div>
     </Stack>
   </Box>
   <Box className="bg-gray-800/80 border border-gray-700/50 rounded-lg p-4">
     <Stack gap="xs">
-      <div className="text-blue-300 font-semibold">Backend Engineer</div>
-      <div className="text-gray-400 text-xs">APIs, databases, services</div>
+      <div className="text-violet-300 font-semibold text-sm">Sr Full-Stack Engineer</div>
+      <div className="text-gray-400 text-xs">End-to-end features · Sonnet</div>
     </Stack>
   </Box>
   <Box className="bg-gray-800/80 border border-gray-700/50 rounded-lg p-4">
     <Stack gap="xs">
-      <div className="text-blue-300 font-semibold">DevOps Engineer</div>
-      <div className="text-gray-400 text-xs">CI/CD, infrastructure</div>
-    </Stack>
-  </Box>
-  <Box className="bg-gray-800/80 border border-gray-700/50 rounded-lg p-4">
-    <Stack gap="xs">
-      <div className="text-blue-300 font-semibold">Security Engineer</div>
-      <div className="text-gray-400 text-xs">Threat modeling, audits</div>
-    </Stack>
-  </Box>
-  <Box className="bg-gray-800/80 border border-gray-700/50 rounded-lg p-4">
-    <Stack gap="xs">
-      <div className="text-blue-300 font-semibold">QA Lead</div>
-      <div className="text-gray-400 text-xs">Testing strategy, coverage</div>
-    </Stack>
-  </Box>
-  <Box className="bg-gray-800/80 border border-gray-700/50 rounded-lg p-4">
-    <Stack gap="xs">
-      <div className="text-blue-300 font-semibold">Tech Lead</div>
-      <div className="text-gray-400 text-xs">Code review, standards</div>
-    </Stack>
-  </Box>
-  <Box className="bg-gray-800/80 border border-gray-700/50 rounded-lg p-4">
-    <Stack gap="xs">
-      <div className="text-blue-300 font-semibold">Data Engineer</div>
-      <div className="text-gray-400 text-xs">ML pipelines, analytics</div>
+      <div className="text-violet-300 font-semibold text-sm">Sr DevOps Engineer</div>
+      <div className="text-gray-400 text-xs">Platform reliability · Sonnet</div>
     </Stack>
   </Box>
 </Grid>
 
-## Product & Design Division (6 agents)
-
-<Grid cols={4} gap="sm" responsive minChildWidth="200px" className="my-6">
-  <Box className="bg-gray-800/80 border border-gray-700/50 rounded-lg p-4">
-    <Stack gap="xs">
-      <div className="text-green-300 font-semibold">Product Manager</div>
-      <div className="text-gray-400 text-xs">PRDs, user stories</div>
-    </Stack>
-  </Box>
-  <Box className="bg-gray-800/80 border border-gray-700/50 rounded-lg p-4">
-    <Stack gap="xs">
-      <div className="text-green-300 font-semibold">UX Designer</div>
-      <div className="text-gray-400 text-xs">Wireframes, prototypes</div>
-    </Stack>
-  </Box>
-  <Box className="bg-gray-800/80 border border-gray-700/50 rounded-lg p-4">
-    <Stack gap="xs">
-      <div className="text-green-300 font-semibold">Technical Writer</div>
-      <div className="text-gray-400 text-xs">Docs, guides, READMEs</div>
-    </Stack>
-  </Box>
-  <Box className="bg-gray-800/80 border border-gray-700/50 rounded-lg p-4">
-    <Stack gap="xs">
-      <div className="text-green-300 font-semibold">Research Analyst</div>
-      <div className="text-gray-400 text-xs">Market research, data</div>
-    </Stack>
-  </Box>
-</Grid>
-
-## Operations Division (6 agents)
-
-<Grid cols={4} gap="sm" responsive minChildWidth="200px" className="my-6">
-  <Box className="bg-gray-800/80 border border-gray-700/50 rounded-lg p-4">
-    <Stack gap="xs">
-      <div className="text-purple-300 font-semibold">SRE</div>
-      <div className="text-gray-400 text-xs">Reliability, uptime</div>
-    </Stack>
-  </Box>
-  <Box className="bg-gray-800/80 border border-gray-700/50 rounded-lg p-4">
-    <Stack gap="xs">
-      <div className="text-purple-300 font-semibold">Cost Analyst</div>
-      <div className="text-gray-400 text-xs">Token tracking, budgets</div>
-    </Stack>
-  </Box>
-  <Box className="bg-gray-800/80 border border-gray-700/50 rounded-lg p-4">
-    <Stack gap="xs">
-      <div className="text-purple-300 font-semibold">Compliance Officer</div>
-      <div className="text-gray-400 text-xs">SOC 2, audit trails</div>
-    </Stack>
-  </Box>
-  <Box className="bg-gray-800/80 border border-gray-700/50 rounded-lg p-4">
-    <Stack gap="xs">
-      <div className="text-purple-300 font-semibold">Knowledge Manager</div>
-      <div className="text-gray-400 text-xs">RAG, memory, context</div>
-    </Stack>
-  </Box>
-</Grid>
-
-## Consultants (3 agents)
+## Implementation Layer (6 agents)
 
 <Grid cols={3} gap="sm" responsive minChildWidth="200px" className="my-6">
   <Box className="bg-gray-800/80 border border-gray-700/50 rounded-lg p-4">
     <Stack gap="xs">
-      <div className="text-orange-300 font-semibold">Security Architect</div>
-      <div className="text-gray-400 text-xs">Threat modeling, pen testing</div>
+      <div className="text-blue-300 font-semibold text-sm">Frontend Developer</div>
+      <div className="text-gray-400 text-xs">UI/UX, React · Sonnet</div>
     </Stack>
   </Box>
   <Box className="bg-gray-800/80 border border-gray-700/50 rounded-lg p-4">
     <Stack gap="xs">
-      <div className="text-orange-300 font-semibold">UX Consultant</div>
-      <div className="text-gray-400 text-xs">Usability, accessibility</div>
+      <div className="text-blue-300 font-semibold text-sm">Backend Developer — JVM/Systems</div>
+      <div className="text-gray-400 text-xs">Java, Kotlin, Rust · Sonnet</div>
     </Stack>
   </Box>
   <Box className="bg-gray-800/80 border border-gray-700/50 rounded-lg p-4">
     <Stack gap="xs">
-      <div className="text-orange-300 font-semibold">Systems Architect</div>
-      <div className="text-gray-400 text-xs">Distributed systems, scale</div>
+      <div className="text-blue-300 font-semibold text-sm">Backend Developer — Scripting</div>
+      <div className="text-gray-400 text-xs">Python, JS, Go · Sonnet</div>
+    </Stack>
+  </Box>
+  <Box className="bg-gray-800/80 border border-gray-700/50 rounded-lg p-4">
+    <Stack gap="xs">
+      <div className="text-blue-300 font-semibold text-sm">Full-Stack Developer</div>
+      <div className="text-gray-400 text-xs">Cross-layer features · Sonnet</div>
+    </Stack>
+  </Box>
+  <Box className="bg-gray-800/80 border border-gray-700/50 rounded-lg p-4">
+    <Stack gap="xs">
+      <div className="text-blue-300 font-semibold text-sm">DevOps Engineer</div>
+      <div className="text-gray-400 text-xs">CI/CD, infra · Sonnet</div>
+    </Stack>
+  </Box>
+  <Box className="bg-gray-800/80 border border-gray-700/50 rounded-lg p-4">
+    <Stack gap="xs">
+      <div className="text-blue-300 font-semibold text-sm">Performance Engineer</div>
+      <div className="text-gray-400 text-xs">Profiling, optimization · Sonnet</div>
+    </Stack>
+  </Box>
+</Grid>
+
+## Quality Layer (4 agents)
+
+<Grid cols={4} gap="sm" responsive minChildWidth="200px" className="my-6">
+  <Box className="bg-gray-800/80 border border-gray-700/50 rounded-lg p-4">
+    <Stack gap="xs">
+      <div className="text-green-300 font-semibold text-sm">QA Lead</div>
+      <div className="text-gray-400 text-xs">Testing strategy · Sonnet</div>
+    </Stack>
+  </Box>
+  <Box className="bg-gray-800/80 border border-gray-700/50 rounded-lg p-4">
+    <Stack gap="xs">
+      <div className="text-green-300 font-semibold text-sm">Test Engineer — Frontend</div>
+      <div className="text-gray-400 text-xs">E2E, component tests · Sonnet</div>
+    </Stack>
+  </Box>
+  <Box className="bg-gray-800/80 border border-gray-700/50 rounded-lg p-4">
+    <Stack gap="xs">
+      <div className="text-green-300 font-semibold text-sm">Test Engineer — Backend</div>
+      <div className="text-gray-400 text-xs">Integration, API tests · Sonnet</div>
+    </Stack>
+  </Box>
+  <Box className="bg-gray-800/80 border border-gray-700/50 rounded-lg p-4">
+    <Stack gap="xs">
+      <div className="text-green-300 font-semibold text-sm">Linting & Standards Agent</div>
+      <div className="text-gray-400 text-xs">Code style, ruff, mypy · Haiku</div>
+    </Stack>
+  </Box>
+</Grid>
+
+## Consultant Layer (4 agents)
+
+<Grid cols={4} gap="sm" responsive minChildWidth="200px" className="my-6">
+  <Box className="bg-gray-800/80 border border-gray-700/50 rounded-lg p-4">
+    <Stack gap="xs">
+      <div className="text-orange-300 font-semibold text-sm">Security Consultant</div>
+      <div className="text-gray-400 text-xs">Threat modeling, audits · Opus</div>
+    </Stack>
+  </Box>
+  <Box className="bg-gray-800/80 border border-gray-700/50 rounded-lg p-4">
+    <Stack gap="xs">
+      <div className="text-orange-300 font-semibold text-sm">UX Consultant</div>
+      <div className="text-gray-400 text-xs">Usability, accessibility · Gemini</div>
+    </Stack>
+  </Box>
+  <Box className="bg-gray-800/80 border border-gray-700/50 rounded-lg p-4">
+    <Stack gap="xs">
+      <div className="text-orange-300 font-semibold text-sm">Systems Architecture Consultant</div>
+      <div className="text-gray-400 text-xs">Distributed systems, scale · o3</div>
+    </Stack>
+  </Box>
+  <Box className="bg-gray-800/80 border border-gray-700/50 rounded-lg p-4">
+    <Stack gap="xs">
+      <div className="text-orange-300 font-semibold text-sm">Cost Optimization Consultant</div>
+      <div className="text-gray-400 text-xs">Token efficiency, budgets · Haiku</div>
     </Stack>
   </Box>
 </Grid>
@@ -201,14 +236,14 @@ Every agent has access to encrypted databases, knowledge bases, and learns from 
 <Grid cols={4} gap="md" className="my-8" responsive minChildWidth="150px">
   <Center>
     <Stack gap="xs" align="center">
-      <div className="text-4xl font-bold text-blue-400">56</div>
+      <div className="text-4xl font-bold text-blue-400">27</div>
       <div className="text-gray-300 text-sm">Active Agents</div>
     </Stack>
   </Center>
   <Center>
     <Stack gap="xs" align="center">
-      <div className="text-4xl font-bold text-green-400">3</div>
-      <div className="text-gray-300 text-sm">VP Divisions</div>
+      <div className="text-4xl font-bold text-green-400">6</div>
+      <div className="text-gray-300 text-sm">Org Layers</div>
     </Stack>
   </Center>
   <Center>
